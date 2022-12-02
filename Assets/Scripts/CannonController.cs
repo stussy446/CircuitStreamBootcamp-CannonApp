@@ -31,6 +31,7 @@ public class CannonController : MonoBehaviour
     {
         AimCannon();
         TryFireCannon();
+        CannonRaycast();
     }
 
     private void AimCannon()
@@ -55,5 +56,21 @@ public class CannonController : MonoBehaviour
 
         CannonBall instantiatedBall = Instantiate(_projectilePrefab, _firePointTransform.position, Quaternion.identity);
         instantiatedBall.Setup(_firePointTransform.forward * _projectileForce);
+    }
+
+    private void CannonRaycast()
+    {
+        // shoots the ray from the cannons firepoint forward and stores results into m_results
+        RaycastHit[] m_results = new RaycastHit[1];
+        int hits = Physics.RaycastNonAlloc(_firePointTransform.position, _firePointTransform.forward, m_results, 100, LayerMask.GetMask("Targets"));
+
+        if (hits == 0) { return; }
+        
+        // goes through the results and sets the hit gameobjects color to red
+        for (int i = 0; i < hits; i++)
+        {
+            Material hitMaterial = m_results[i].collider.GetComponent<Renderer>().material;
+            hitMaterial.color = Color.red;
+        }
     }
 }
