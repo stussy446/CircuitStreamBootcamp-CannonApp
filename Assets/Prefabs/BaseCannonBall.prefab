@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 533576379358369824}
   - component: {fileID: 3057176301240881670}
-  - component: {fileID: 5816900539934452445}
   - component: {fileID: 7867913387946390000}
   m_Layer: 8
-  m_Name: CannonBall
+  m_Name: BaseCannonBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,19 +55,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5816900539934452445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 536813900378292188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6840b116b9bee441b7df3f7b6a96163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 3057176301240881670}
 --- !u!54 &7867913387946390000
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -734,7 +734,7 @@ MonoBehaviour:
   _cannonBarrelTransform: {fileID: 26191465}
   _cannonBaseTransform: {fileID: 723155765}
   _projectileForce: 50
-  _projectilePrefab: {fileID: 5816900539934452445, guid: 3547474a124479641896f7b8eb250e0d,
+  _projectilePrefab: {fileID: 4676410706518551231, guid: 73bfd7cba2bd8cf40b88d5554e1c22fd,
     type: 3}
   _firePointTransform: {fileID: 7489498592515010994}
 --- !u!4 &723155765 stripped

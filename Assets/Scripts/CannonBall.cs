@@ -6,9 +6,9 @@ using UnityEngine;
 public class CannonBall : MonoBehaviour
 {
     private static readonly int Exploded = Animator.StringToHash("Exploded");
-    private Rigidbody _ballRigidBody;
+    protected Rigidbody ballRigidBody;
 
-    [SerializeField] private Animator _animator;
+    [SerializeField] protected Animator animator;
 
     [Header("Explosion Settings")]
     [SerializeField] private float _explosionRadius = 9.0f;
@@ -17,27 +17,27 @@ public class CannonBall : MonoBehaviour
 
     void Awake()
     {
-        _ballRigidBody = GetComponent<Rigidbody>();
+        ballRigidBody = GetComponent<Rigidbody>();
     }
 
-    public void Setup(Vector3 fireForce)
+    public virtual void Setup(Vector3 fireForce)
     {
-        _ballRigidBody.AddForce(fireForce, ForceMode.Impulse);
-        _ballRigidBody.angularVelocity = new Vector3(
+        ballRigidBody.AddForce(fireForce, ForceMode.Impulse);
+        ballRigidBody.angularVelocity = new Vector3(
             Random.Range(-10f, 10f),
             Random.Range(-10f, 10f), 
             Random.Range(-10f, 10f));
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         transform.rotation = Quaternion.FromToRotation(transform.up, collision.GetContact(0).normal);
 
-        _ballRigidBody.velocity = Vector3.zero;
-        _ballRigidBody.angularVelocity = Vector3.zero;
-        _ballRigidBody.isKinematic = true;
+        ballRigidBody.velocity = Vector3.zero;
+        ballRigidBody.angularVelocity = Vector3.zero;
+        ballRigidBody.isKinematic = true;
 
-        _animator.SetTrigger(Exploded);
+        animator.SetTrigger(Exploded);
 
         Vector3 explosionPosition = transform.position;
         Collider[] colliders = Physics.OverlapSphere(explosionPosition, _explosionRadius, LayerMask.GetMask("Targets"));
