@@ -13090,6 +13090,10 @@ PrefabInstance:
       value: -0.7030201
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 0297c1d9dc5137043b0bde39f96ff5b2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 0297c1d9dc5137043b0bde39f96ff5b2, type: 3}
       propertyPath: m_LightmapIndex
       value: 4
       objectReference: {fileID: 0}
