@@ -61,6 +61,20 @@ namespace CannonApp
             SceneManager.LoadScene($"Level{levelIndex}");
         }
 
+        private bool GetLevelIndex(string sceneName, out int levelIndex)
+        {
+            Match find = Regex.Match(sceneName, "\\d+");
+
+            if (find != Match.Empty)
+            {
+                levelIndex = System.Int32.Parse(find.Value);
+                return true;
+            }
+
+            levelIndex = -1;
+            return false;
+        }
+
         private void Awake()
         {
             InitializeLevelCount();
@@ -70,14 +84,23 @@ namespace CannonApp
 
         private void SetCurrentLevel()
         {
-            // if ()
-            // {
-            //     Debug.LogError("Level Controller on a non-level scene!");
-            // }
+            if (!GetLevelIndex(SceneManager.GetActiveScene().name, out currentLevel))
+            {
+                Debug.LogError("Level Controller on a non-level scene!");
+            }
         }
 
         private void InitializeTargets()
         {
+            Target[] targets = FindObjectsOfType<Target>();
+
+            foreach (Target target in targets)
+            {
+                target.Setup(this);
+            }
+
+            remainingTargets = targets.Length;
+            UpdateRemainingTargets();
         }
 
         private void InitializeLevelCount()

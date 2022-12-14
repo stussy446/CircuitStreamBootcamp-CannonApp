@@ -12,11 +12,16 @@ public class SplitCannonBall : CannonBall
     public float splitAngle = 20.0f;
     public CannonBall splitCannonBallPrefab;
 
-    public override void Setup(Vector3 fireForce)
+    private float _remainingSplitTime;
+
+    public override CannonBallType BallType => CannonBallType.Split;
+
+    public override void Setup(Vector3 fireForce, CannonBallsPool objectPool)
     {
-        base.Setup(fireForce);
+        base.Setup(fireForce, objectPool);
 
         animator.SetTrigger(SpecialAvailableHash);
+        _pool = objectPool;
     }
 
     protected override void OnCollisionEnter(Collision collision)
@@ -40,10 +45,10 @@ public class SplitCannonBall : CannonBall
 
         // instantiate both balls at their angled positions
         var ball1 = Instantiate(splitCannonBallPrefab, position, Quaternion.identity);
-        ball1.Setup(ball1Forward);
+        ball1.Setup(ball1Forward, _pool);
 
         var ball2 = Instantiate(splitCannonBallPrefab, position, Quaternion.identity);
-        ball2.Setup(ball2Forward);
+        ball2.Setup(ball2Forward, _pool);
 
         // trigger the SpecialUsedHash
         animator.SetTrigger(SpecialUsedHash);
@@ -53,9 +58,9 @@ public class SplitCannonBall : CannonBall
     // Update is called once per frame
     void Update()
     {
-        splitTime -= Time.deltaTime;
+        _remainingSplitTime -= Time.deltaTime;
 
-        if (splitTime <= 0)
+        if (_remainingSplitTime <= 0)
         {
             SpawnSplitCannonBalls();
         }

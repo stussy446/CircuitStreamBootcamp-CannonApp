@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class CannonController : MonoBehaviour
@@ -21,10 +18,15 @@ public class CannonController : MonoBehaviour
     [SerializeField] private CannonBall _projectilePrefab;
     [SerializeField] private Transform _firePointTransform;
 
+    [SerializeField] private CannonBallType _cannonBallTypeShot;
+    [SerializeField] private CannonBallsPool _pool;
 
-    void Start()
+    private bool _fireDisabled;
+
+    private void Awake()
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
+        _pool.Setup(20);
     }
 
     void Update()
@@ -49,13 +51,14 @@ public class CannonController : MonoBehaviour
 
     private void TryFireCannon()
     {
-        if (!Input.GetButtonDown("Fire1"))
+        if (_fireDisabled || !Input.GetButtonDown("Fire1"))
         {
             return;
         }
 
-        CannonBall instantiatedBall = Instantiate(_projectilePrefab, _firePointTransform.position, Quaternion.identity);
-        instantiatedBall.Setup(_firePointTransform.forward * _projectileForce);
+        CannonBall instantiatedBall = _pool.GetCannonBall(_cannonBallTypeShot);
+        instantiatedBall.transform.position = _firePointTransform.position;
+        instantiatedBall.Setup(_firePointTransform.forward * _projectileForce, _pool);
     }
 
     private void CannonRaycast()
@@ -72,5 +75,11 @@ public class CannonController : MonoBehaviour
             Material hitMaterial = m_results[i].collider.GetComponent<Renderer>().material;
             hitMaterial.color = Color.red;
         }
+    }
+
+    public void DisableFire()
+    {
+        _fireDisabled = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }
