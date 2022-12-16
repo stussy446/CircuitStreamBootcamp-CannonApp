@@ -21,11 +21,23 @@ public class CannonController : MonoBehaviour
     [SerializeField] private CannonBallType _cannonBallTypeShot;
     [SerializeField] private CannonBallsPool _pool;
 
+    [Header("Use Keyboard")]
+    [SerializeField] private bool _useKeyboard;
+
     private bool _fireDisabled;
+    private ICannonInputScheme _inputScheme;
 
     private void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        if (_useKeyboard)
+        {
+            _inputScheme = new CannonKeyboardInputScheme();
+        }
+        else
+        {
+            _inputScheme = new CannonMouseInputScheme();
+        }
+
         _pool.Setup(20);
     }
 
@@ -38,20 +50,22 @@ public class CannonController : MonoBehaviour
 
     private void AimCannon()
     {
+        var input = _inputScheme.AimInput();
+
         // cannon base rotation in the X
-        float newBaseRotation = _cannonBaseTransform.localRotation.eulerAngles.y + _rotationSpeed * Input.GetAxis("Mouse X");
+        float newBaseRotation = _cannonBaseTransform.localRotation.eulerAngles.y + _rotationSpeed * input.x;
         newBaseRotation = Mathf.Clamp(newBaseRotation, _minYRotation, _maxYRotation);
         _cannonBaseTransform.localRotation = Quaternion.Euler(0, newBaseRotation, 0);
 
         // cannon barrel rotation in the Y 
-        float newBarrelRotation = _cannonBarrelTransform.localRotation.eulerAngles.x - _rotationSpeed * Input.GetAxis("Mouse Y");
+        float newBarrelRotation = _cannonBarrelTransform.localRotation.eulerAngles.x - _rotationSpeed * input.y;
         newBarrelRotation = Mathf.Clamp(newBarrelRotation, _minXRotation, _maxXRotation);
         _cannonBarrelTransform.localRotation = Quaternion.Euler(newBarrelRotation, 0, 0);
     }
 
     private void TryFireCannon()
     {
-        if (_fireDisabled || !Input.GetButtonDown("Fire1"))
+        if (_fireDisabled || !_inputScheme.FireTriggered())
         {
             return;
         }
@@ -80,6 +94,6 @@ public class CannonController : MonoBehaviour
     public void DisableFire()
     {
         _fireDisabled = true;
-        Cursor.lockState = CursorLockMode.None;
+        _inputScheme.Dispose();
     }
 }
