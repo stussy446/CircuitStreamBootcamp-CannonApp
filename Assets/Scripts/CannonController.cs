@@ -1,3 +1,4 @@
+using CannonApp;
 using UnityEngine;
 
 public class CannonController : MonoBehaviour
@@ -39,6 +40,11 @@ public class CannonController : MonoBehaviour
         }
 
         _pool.Setup(20);
+    }
+
+    private void Start()
+    {
+        GameServices.GetService<LevelController>().levelEnded += DisableFire;
     }
 
     void Update()

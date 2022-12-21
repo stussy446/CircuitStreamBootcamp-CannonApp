@@ -12,15 +12,16 @@ namespace CannonApp
         private static readonly int LevelEndedHash = Animator.StringToHash("LevelEnded");
         private static readonly int GameOverHash = Animator.StringToHash("GameOver");
 
-        [SerializeField] private CannonController cannonController;
         [SerializeField] private Animator animator;
         [SerializeField] private TMP_Text remainingTargetsText;
         [SerializeField] private TMP_Text levelFinishedText;
 
         private static int levelCount;
 
-        private int remainingTargets;
+        protected int remainingTargets;
         private int currentLevel;
+
+        public Action levelEnded;
 
         public void TargetDestroyed()
         {
@@ -29,6 +30,12 @@ namespace CannonApp
             if (remainingTargets <= 0)
                 EndLevel();
 
+            UpdateRemainingTargets();
+        }
+
+        public virtual void RegisterTarget()
+        {
+            remainingTargets++;
             UpdateRemainingTargets();
         }
 
@@ -44,7 +51,7 @@ namespace CannonApp
 
         private void EndLevel()
         {
-            cannonController.DisableFire();
+            levelEnded?.Invoke();
 
             if (currentLevel == levelCount)
             {
@@ -75,11 +82,17 @@ namespace CannonApp
             return false;
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
+            GameServices.RegisterService(this);
+
             InitializeLevelCount();
             SetCurrentLevel();
-            InitializeTargets();
+        }
+
+        private void OnDestroy()
+        {
+            GameServices.DeregisterService(this);
         }
 
         private void SetCurrentLevel()
@@ -88,19 +101,6 @@ namespace CannonApp
             {
                 Debug.LogError("Level Controller on a non-level scene!");
             }
-        }
-
-        private void InitializeTargets()
-        {
-            Target[] targets = FindObjectsOfType<Target>();
-
-            foreach (Target target in targets)
-            {
-                target.Setup(this);
-            }
-
-            remainingTargets = targets.Length;
-            UpdateRemainingTargets();
         }
 
         private void InitializeLevelCount()
@@ -127,7 +127,7 @@ namespace CannonApp
             Debug.Assert(maxLevelFound == levelCount, "Max Scene Level differs from the total levels found");
         }
 
-        private void UpdateRemainingTargets()
+        protected void UpdateRemainingTargets()
         {
             remainingTargetsText.text = $"Remaining Targets: {remainingTargets}!";
         }

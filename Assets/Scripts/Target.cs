@@ -5,13 +5,9 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    [SerializeField] private LayerMask _waterTriggerLayer;
-
-    private LevelController _levelController;
-
-    public void Setup(LevelController controller) 
-    { 
-        _levelController = controller;
+    private void Start()
+    {
+        GameServices.GetService<LevelController>().RegisterTarget();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,14 +17,8 @@ public class Target : MonoBehaviour
             return;
         }
 
-        _levelController.TargetDestroyed();
+        GameServices.GetService<LevelController>().TargetDestroyed();
         Destroy(gameObject);
-
-        //// uses bitwise operation to check if the other colliders layer is a layer that can be collided with 
-        //if ((_waterTriggerLayer.value & (1 << other.gameObject.layer)) > 0)
-        //{
-        //    Destroy(gameObject);
-        //}
     }
 
 
