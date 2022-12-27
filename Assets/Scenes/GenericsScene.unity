@@ -436,6 +436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _genericprefab: {fileID: 9103632748620233652, guid: 3829ba212fdc1cc45a6ae2dcef9f893a,
     type: 3}
+  _amountToInstantiate: 10
 --- !u!4 &1887138931
 Transform:
   m_ObjectHideFlags: 0
