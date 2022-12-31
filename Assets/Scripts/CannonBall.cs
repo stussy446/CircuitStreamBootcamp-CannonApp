@@ -1,9 +1,13 @@
 using UnityEngine;
+using CannonApp;
 
-public class CannonBall : MonoBehaviour
+public class CannonBall : MonoBehaviour, IPoolObject
 {
     private static readonly int Exploded = Animator.StringToHash("Exploded");
     public virtual CannonBallType BallType => CannonBallType.Normal;
+
+    public PoolObjectId PoolId => throw new System.NotImplementedException();
+
     protected Rigidbody ballRigidBody;
     protected CannonBallsPool _pool;
 
@@ -73,5 +77,15 @@ public class CannonBall : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _pool.ReleaseCannonBall(this, BallType);
+    }
+
+    public void Activate()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Deactivate()
+    {
+        throw new System.NotImplementedException();
     }
 }
