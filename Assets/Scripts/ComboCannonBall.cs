@@ -1,3 +1,4 @@
+using CannonApp;
 using UnityEngine;
 
 public class ComboCannonBall : CannonBall
@@ -7,7 +8,9 @@ public class ComboCannonBall : CannonBall
     private float _ball1Speed;
     private float _ball2Speed;
 
-    public override CannonBallType BallType => CannonBallType.Combo;
+    //public override CannonBallType BallType => CannonBallType.Combo;
+    public override PoolObjectId PoolId => PoolObjectId.SplitCannonBall;
+
 
     protected override void OnCollisionEnter(Collision collision)
     {

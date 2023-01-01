@@ -19,8 +19,8 @@ public class CannonController : MonoBehaviour
     [SerializeField] private CannonBall _projectilePrefab;
     [SerializeField] private Transform _firePointTransform;
 
-    [SerializeField] private CannonBallType _cannonBallTypeShot;
-    [SerializeField] private CannonBallsPool _pool;
+    [SerializeField] private PoolObjectId _cannonBallTypeShot;
+    [SerializeField] private ObjectsPool _pool;
 
     [Header("Use Keyboard")]
     [SerializeField] private bool _useKeyboard;
@@ -76,7 +76,7 @@ public class CannonController : MonoBehaviour
             return;
         }
 
-        CannonBall instantiatedBall = _pool.GetCannonBall(_cannonBallTypeShot);
+        CannonBall instantiatedBall = _pool.GetObject<CannonBall>(_cannonBallTypeShot);
         instantiatedBall.transform.position = _firePointTransform.position;
         instantiatedBall.Setup(_firePointTransform.forward * _projectileForce, _pool);
     }

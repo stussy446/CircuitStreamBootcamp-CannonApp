@@ -1,3 +1,4 @@
+using CannonApp;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
@@ -14,9 +15,9 @@ public class SplitCannonBall : CannonBall
 
     private float _remainingSplitTime;
 
-    public override CannonBallType BallType => CannonBallType.Split;
+    public override PoolObjectId PoolId => PoolObjectId.SplitCannonBall;
 
-    public override void Setup(Vector3 fireForce, CannonBallsPool objectPool)
+    public override void Setup(Vector3 fireForce, ObjectsPool objectPool)
     {
         base.Setup(fireForce, objectPool);
 

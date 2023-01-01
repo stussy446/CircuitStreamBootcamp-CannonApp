@@ -11,18 +11,12 @@ public class GenericsTest : MonoBehaviour, IGenericsTest
     private void Awake()
     {
         CustomAddComponent<BoxCollider>(this.gameObject);
-        Debug.Log($"added BoxCollider to {this.gameObject} object");
 
         CustomAddComponent<MeshRenderer>(this.gameObject);
-        Debug.Log($"added Meshrenderer to {this.gameObject} object");
 
         CustomAddComponent<Animator>(this.gameObject);
-        Debug.Log($"added Animator to {this.gameObject} object");
 
         CustomAddComponent<TextMeshPro>(this.gameObject);
-
-        //ParentStuff<Transform>(FindObjectOfType<CannonController>().transform);
-
     }
 
 

@@ -4,12 +4,12 @@ using CannonApp;
 public class CannonBall : MonoBehaviour, IPoolObject
 {
     private static readonly int Exploded = Animator.StringToHash("Exploded");
-    public virtual CannonBallType BallType => CannonBallType.Normal;
+    public virtual PoolObjectId PoolId => PoolObjectId.DefaultCannonBall;
 
-    public PoolObjectId PoolId => throw new System.NotImplementedException();
+    //public PoolObjectId PoolId => throw new System.NotImplementedException();
 
     protected Rigidbody ballRigidBody;
-    protected CannonBallsPool _pool;
+    protected ObjectsPool _pool;
 
     [SerializeField] protected Animator animator;
 
@@ -24,7 +24,7 @@ public class CannonBall : MonoBehaviour, IPoolObject
         ballRigidBody = GetComponent<Rigidbody>();
     }
 
-    public virtual void Setup(Vector3 fireForce, CannonBallsPool objectPool)
+    public virtual void Setup(Vector3 fireForce, ObjectsPool objectPool)
     {
         ballRigidBody.velocity = Vector3.zero;
         ballRigidBody.angularVelocity = Vector3.zero;
@@ -71,21 +71,21 @@ public class CannonBall : MonoBehaviour, IPoolObject
 
     public void OnFinishedExplosionAnimation()
     {
-        _pool.ReleaseCannonBall(this, BallType);
+        _pool.ReleaseObject(this);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        _pool.ReleaseCannonBall(this, BallType);
+        _pool.ReleaseObject(this);
     }
 
     public void Activate()
     {
-        throw new System.NotImplementedException();
+        gameObject.SetActive(true);
     }
 
     public void Deactivate()
     {
-        throw new System.NotImplementedException();
+        gameObject.SetActive(false);
     }
 }
