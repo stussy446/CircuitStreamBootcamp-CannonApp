@@ -45,10 +45,12 @@ public class SplitCannonBall : CannonBall
         var ball2Forward = Quaternion.AngleAxis(splitAngle, Vector3.up) * forward;
 
         // instantiate both balls at their angled positions
-        var ball1 = Instantiate(splitCannonBallPrefab, position, Quaternion.identity);
+        var ball1 = _pool.GetObject<CannonBall>(PoolObjectId.DefaultCannonBall); 
+        ball1.transform.position = position;
         ball1.Setup(ball1Forward, _pool);
 
-        var ball2 = Instantiate(splitCannonBallPrefab, position, Quaternion.identity);
+        var ball2 = _pool.GetObject<CannonBall>(PoolObjectId.DefaultCannonBall);
+        ball2.transform.position = position;
         ball2.Setup(ball2Forward, _pool);
 
         // trigger the SpecialUsedHash
