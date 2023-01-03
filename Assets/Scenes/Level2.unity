@@ -825,10 +825,9 @@ MonoBehaviour:
   _firePointTransform: {fileID: 7489498592515010994}
   _cannonBallTypeShot: 0
   _pool:
-    _possibleCannonBallPrefabs:
-    - {fileID: -5990740930009333712, guid: a7b143e9bdecaa94a9fff5ff393bebe8, type: 3}
-    - {fileID: 4247233173321196564, guid: c37e824131c4d11468f6041e1558624f, type: 3}
-    - {fileID: 4676410706518551231, guid: 73bfd7cba2bd8cf40b88d5554e1c22fd, type: 3}
+    _poolPrefabs:
+    - {fileID: 312787185800574175, guid: a7b143e9bdecaa94a9fff5ff393bebe8, type: 3}
+    - {fileID: 8173412755202018437, guid: c37e824131c4d11468f6041e1558624f, type: 3}
   _useKeyboard: 0
 --- !u!4 &723155765 stripped
 Transform:
