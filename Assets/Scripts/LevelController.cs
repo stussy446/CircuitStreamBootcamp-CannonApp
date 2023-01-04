@@ -3,25 +3,19 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
-using TMPro;
+using UnityEngine.Rendering;
 
 namespace CannonApp
 {
     public class LevelController : MonoBehaviour
     {
-        private static readonly int LevelEndedHash = Animator.StringToHash("LevelEnded");
-        private static readonly int GameOverHash = Animator.StringToHash("GameOver");
-
-        [SerializeField] private Animator animator;
-        [SerializeField] private TMP_Text remainingTargetsText;
-        [SerializeField] private TMP_Text levelFinishedText;
-
+        [SerializeField]
+        protected UIGraphics uiGraphics;
         private static int levelCount;
 
+        public Action levelEnded;
         protected int remainingTargets;
         private int currentLevel;
-
-        public Action levelEnded;
 
         public void TargetDestroyed()
         {
@@ -30,13 +24,13 @@ namespace CannonApp
             if (remainingTargets <= 0)
                 EndLevel();
 
-            UpdateRemainingTargets();
+            uiGraphics.UpdateRemainingTargets(remainingTargets);
         }
 
         public virtual void RegisterTarget()
         {
             remainingTargets++;
-            UpdateRemainingTargets();
+            uiGraphics.UpdateRemainingTargets(remainingTargets);
         }
 
         public void OnFinishedEndLevelAnimation()
@@ -44,9 +38,14 @@ namespace CannonApp
             GoToLevel(currentLevel + 1);
         }
 
-        public void OnRetryClicked()
+        public void RetryGame()
         {
             GoToLevel(1);
+        }
+
+        public void NextLevel()
+        {
+            GoToLevel(currentLevel + 1);
         }
 
         private void EndLevel()
@@ -55,12 +54,11 @@ namespace CannonApp
 
             if (currentLevel == levelCount)
             {
-                animator.SetTrigger(GameOverHash);
+                uiGraphics.EndGame();
                 return;
             }
 
-            levelFinishedText.text = $"Level {currentLevel} Finished!";
-            animator.SetTrigger(LevelEndedHash);
+            uiGraphics.EndLevel(currentLevel);
         }
 
         private void GoToLevel(int levelIndex)
@@ -68,13 +66,13 @@ namespace CannonApp
             SceneManager.LoadScene($"Level{levelIndex}");
         }
 
-        private bool GetLevelIndex(string sceneName, out int levelIndex)
+        private bool GetlevelIndex(string sceneName, out int levelIndex)
         {
-            Match find = Regex.Match(sceneName, "\\d+");
+            Match find = Regex.Match(sceneName, "\\d+"); // Match.Empty
 
             if (find != Match.Empty)
             {
-                levelIndex = System.Int32.Parse(find.Value);
+                levelIndex = Int32.Parse(find.Value);
                 return true;
             }
 
@@ -97,7 +95,7 @@ namespace CannonApp
 
         private void SetCurrentLevel()
         {
-            if (!GetLevelIndex(SceneManager.GetActiveScene().name, out currentLevel))
+            if (!GetlevelIndex(SceneManager.GetActiveScene().name, out currentLevel))
             {
                 Debug.LogError("Level Controller on a non-level scene!");
             }
@@ -112,24 +110,21 @@ namespace CannonApp
 
             int maxLevelFound = 0;
 
-            for( int i = 0; i < sceneCount; i++ )
+            for (int i = 0; i < sceneCount; i++)
             {
                 string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
                 string sceneName = Path.GetFileNameWithoutExtension(scenePath);
 
-                // if ()
-                // {
-                //     maxLevelFound = Mathf.Max(maxLevelFound, levelIndex);
-                //     levelCount++;
-                // }
+                if (GetlevelIndex(sceneName, out var levelIndex))
+                {
+                    maxLevelFound = Mathf.Max(maxLevelFound, levelIndex);
+                    levelCount++;
+                }
             }
 
             Debug.Assert(maxLevelFound == levelCount, "Max Scene Level differs from the total levels found");
         }
 
-        protected void UpdateRemainingTargets()
-        {
-            remainingTargetsText.text = $"Remaining Targets: {remainingTargets}!";
-        }
+
     }
 }

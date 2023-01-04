@@ -562,57 +562,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 666fe2ba448238848ba203806dd2b503, type: 3}
---- !u!1 &316491655 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8143466738658779537, guid: 666fe2ba448238848ba203806dd2b503,
-    type: 3}
-  m_PrefabInstance: {fileID: 316491654}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &316491656 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8143466737675167489, guid: 666fe2ba448238848ba203806dd2b503,
-    type: 3}
-  m_PrefabInstance: {fileID: 316491654}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &316491657 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8143466737611316967, guid: 666fe2ba448238848ba203806dd2b503,
-    type: 3}
-  m_PrefabInstance: {fileID: 316491654}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!95 &316491658 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8143466738658779540, guid: 666fe2ba448238848ba203806dd2b503,
-    type: 3}
-  m_PrefabInstance: {fileID: 316491654}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &316491659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316491655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e497bf1811b4f8296efb50df9aa68d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 316491658}
-  remainingTargetsText: {fileID: 316491657}
-  levelFinishedText: {fileID: 316491656}
 --- !u!1001 &388444915
 PrefabInstance:
   m_ObjectHideFlags: 0

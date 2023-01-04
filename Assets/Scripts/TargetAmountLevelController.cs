@@ -5,17 +5,17 @@ using CannonApp;
 
 public class TargetAmountLevelController : LevelController
 {
-    [SerializeField] private int _targetDestructionCount = 30;
+    [SerializeField]
+    private int targetDestructionCount = 30;
 
-    public override void RegisterTarget()
-    {
-
-    }
+    public override void RegisterTarget(){ }
 
     protected override void Awake()
     {
         base.Awake();
-        remainingTargets = _targetDestructionCount;
-        UpdateRemainingTargets();
+
+        remainingTargets = targetDestructionCount;
+        uiGraphics.UpdateRemainingTargets(remainingTargets);
     }
+
 }
