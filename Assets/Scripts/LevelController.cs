@@ -1,9 +1,5 @@
 using System;
-using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Text.RegularExpressions;
-using UnityEngine.Rendering;
 
 namespace CannonApp
 {
@@ -11,11 +7,9 @@ namespace CannonApp
     {
         [SerializeField]
         protected UIGraphics uiGraphics;
-        private static int levelCount;
 
         public Action levelEnded;
         protected int remainingTargets;
-        private int currentLevel;
 
         public void TargetDestroyed()
         {
@@ -35,96 +29,33 @@ namespace CannonApp
 
         public void OnFinishedEndLevelAnimation()
         {
-            GoToLevel(currentLevel + 1);
-        }
-
-        public void RetryGame()
-        {
-            GoToLevel(1);
-        }
-
-        public void NextLevel()
-        {
-            GoToLevel(currentLevel + 1);
+            ProgressionController.NextLevel();
         }
 
         private void EndLevel()
         {
             levelEnded?.Invoke();
 
-            if (currentLevel == levelCount)
+            if (ProgressionController.IsLastLevel())
             {
                 uiGraphics.EndGame();
                 return;
             }
 
-            uiGraphics.EndLevel(currentLevel);
-        }
-
-        private void GoToLevel(int levelIndex)
-        {
-            SceneManager.LoadScene($"Level{levelIndex}");
-        }
-
-        private bool GetlevelIndex(string sceneName, out int levelIndex)
-        {
-            Match find = Regex.Match(sceneName, "\\d+"); // Match.Empty
-
-            if (find != Match.Empty)
-            {
-                levelIndex = Int32.Parse(find.Value);
-                return true;
-            }
-
-            levelIndex = -1;
-            return false;
+            uiGraphics.EndLevel(ProgressionController.CurrentLevel);
         }
 
         protected virtual void Awake()
         {
             GameServices.RegisterService(this);
 
-            InitializeLevelCount();
-            SetCurrentLevel();
+            ProgressionController.InitializeLevelCount();
+            ProgressionController.SetCurrentLevel();
         }
 
         private void OnDestroy()
         {
             GameServices.DeregisterService(this);
         }
-
-        private void SetCurrentLevel()
-        {
-            if (!GetlevelIndex(SceneManager.GetActiveScene().name, out currentLevel))
-            {
-                Debug.LogError("Level Controller on a non-level scene!");
-            }
-        }
-
-        private void InitializeLevelCount()
-        {
-            if (levelCount != 0)
-                return;
-
-            int sceneCount = SceneManager.sceneCountInBuildSettings;
-
-            int maxLevelFound = 0;
-
-            for (int i = 0; i < sceneCount; i++)
-            {
-                string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
-                string sceneName = Path.GetFileNameWithoutExtension(scenePath);
-
-                if (GetlevelIndex(sceneName, out var levelIndex))
-                {
-                    maxLevelFound = Mathf.Max(maxLevelFound, levelIndex);
-                    levelCount++;
-                }
-            }
-
-            Debug.Assert(maxLevelFound == levelCount, "Max Scene Level differs from the total levels found");
-        }
-
-
     }
 }

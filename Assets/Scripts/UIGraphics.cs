@@ -29,10 +29,10 @@ public class UIGraphics : MonoBehaviour
 
     public void OnRetryClicked()
     {
-        GameServices.GetService<LevelController>().RetryGame();
+       ProgressionController.RetryGame();
     }
     public void OnFinishedEndLevelAnimation()
     {
-        GameServices.GetService<LevelController>().NextLevel();
+        ProgressionController.NextLevel();
     }
 }
